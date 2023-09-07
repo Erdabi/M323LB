@@ -1,6 +1,6 @@
-import hh from "hyperscript-helpers";
-import { h, diff, patch } from "virtual-dom";
-import createElement from "virtual-dom/create-element";
+const hh = require("hyperscript-helpers");
+const { h, diff, patch } = require("virtual-dom");
+const createElement = require("virtual-dom/create-element");
 
 
 const MSG = {
@@ -51,8 +51,8 @@ function view(dispatch, model) {
         "➕"
       ),
     ]),
-    ...model.cards.map((card, index) => div( 
-        { index},[
+    ...model.cards.map((card, index) => div( {className: "p-2 border",
+         index},[
           p({ },[
               button(
                 {
@@ -82,30 +82,30 @@ function view(dispatch, model) {
           ),
           card.showAnswer ? p({}, card.answer) : null,
           card.showAnswer ? br({}) : null,
-          div({}, [
+          card.showAnswer ? div({}, [
             "Bewertung: ",
             button(
               {
                 onclick: () =>
-                  dispatch({ type: MSG.RATE_CARD, index }),
+                  dispatch({ type: MSG.RATE_CARD, index, rating: "bad"}),
               },
               "👎"
             ),
             button(
               {
                 onclick: () =>
-                  dispatch({ type: MSG.RATE_CARD, index }),
+                  dispatch({ type: MSG.RATE_CARD, index, rating: "good"}),
               },
               "👍"
             ),
             button( 
               {
                 onclick: () =>
-                  dispatch({ type: MSG.RATE_CARD, index }),
+                  dispatch({ type: MSG.RATE_CARD, index, rating: "perfect" }),
               },
               "👌"
             ),
-          ]),
+          ]) : null,
         ]
       )
     ),
@@ -152,22 +152,31 @@ function update(message, model) {
         ...model,
         cards: model.cards.filter((_, index) => index !== message.index),
       };
-
-    case MSG.EDIT_CARD:
+      case MSG.EDIT_CARD:
       const cardToEdit = model.cards[message.index];
 
       return {
         ...model,
-
         question: cardToEdit.question,
         answer: cardToEdit.answer,
         cards: model.cards.filter((_, index) => index !== message.index),
       };
 
-    case MSG.RATE_CARD:
-     
-    default:
-      return model;
+      case MSG.RATE_CARD:
+        const { index, rating } = message;
+        const ratedCards = [...model.cards];
+  
+        if (rating === "bad") {
+          ratedCards[index].rating = 0;
+        } else if (rating === "good") {
+          ratedCards[index].rating += 1;
+        } else if (rating === "perfect") {
+          ratedCards[index].rating += 2;
+        }
+
+        ratedCards.sort((a, b) => a.rating - b.rating);
+  
+        return { ...model, cards: ratedCards };
   }
 }
 
