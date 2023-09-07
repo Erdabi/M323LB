@@ -1,4 +1,8 @@
-// Das sind die verschiedenen Aktionen die in der App auftreten können.
+import hh from "hyperscript-helpers";
+import { h, diff, patch } from "virtual-dom";
+import createElement from "virtual-dom/create-element";
+
+
 const MSG = {
   UPDATE_QUESTION: "UPDATE_QUESTION",
   UPDATE_ANSWER: "UPDATE_ANSWER",
@@ -8,10 +12,7 @@ const MSG = {
   EDIT_CARD: "EDIT_CARD",
   RATE_CARD: "RATE_CARD",
 };
-//du nigger
-import hh from "hyperscript-helpers";
-import { h, diff, patch } from "virtual-dom";
-import createElement from "virtual-dom/create-element";
+
 
 
 const { div, button, input, p, br } = hh(h); //hilfestruckturen
@@ -21,18 +22,18 @@ const { div, button, input, p, br } = hh(h); //hilfestruckturen
 // 'dispatch' sendet die Aktionen an andere Teile der App.
 // 'model' hat die aktuellen Daten der App.
 function view(dispatch, model) {
-  return div({ class: "p-4" }, [
+  return div({ }, [
     div([
-      input({
+      input({ 
         type: "text",
-        placeholder: "Frage eingeben",
+        placeholder: "Enter Question",
         value: model.question,
         oninput: (event) =>
           dispatch({
             type: MSG.UPDATE_QUESTION,
             value: event.target.value,
           }),
-        class: "mr-10",
+        
       }),
       input({
         type: "text",
@@ -40,19 +41,19 @@ function view(dispatch, model) {
         value: model.answer,
         oninput: (event) =>
           dispatch({ type: MSG.UPDATE_ANSWER, value: event.target.value }),
-        class: "mr-10",
+        
       }),
       button(
         {
           onclick: () => dispatch({ type: MSG.SAVE_CARD }),
-          class: "px-2 py-1",
+         
         },
         "➕"
       ),
     ]),
     ...model.cards.map((card, index) => div(
-        { key: index, class: "w-60 m-10 p-10"},[
-          p({ class: "top-5 right-5"},[
+        { key: index,},[
+          p({ },[
               button(
                 {
                   onclick: () => dispatch({ type: MSG.EDIT_CARD, index }),
@@ -64,7 +65,7 @@ function view(dispatch, model) {
                 {
                   onclick: () =>
                     dispatch({ type: MSG.DELETE_CARD, index }),
-                  class: "text-red-500",
+                  
                 },
                 "🚮"
               ),
