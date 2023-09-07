@@ -52,7 +52,7 @@ function view(dispatch, model) {
       ),
     ]),
     ...model.cards.map((card, index) => div( 
-        { key: index,},[
+        { index},[
           p({ },[
               button(
                 {
