@@ -26,7 +26,7 @@ function view(dispatch, model) {
     div([ 
       input({ 
         type: "text",
-        placeholder: "Enter Question",
+        placeholder: "Frage eingeben",
         value: model.question,
         oninput: (event) =>
           dispatch({
