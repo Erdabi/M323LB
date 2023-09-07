@@ -23,7 +23,7 @@ const { div, button, input, p, br } = hh(h); //hilfestruckturen
 // 'model' hat die aktuellen Daten der App.
 function view(dispatch, model) {
   return div({ }, [
-    div([
+    div([ 
       input({ 
         type: "text",
         placeholder: "Enter Question",
@@ -51,7 +51,7 @@ function view(dispatch, model) {
         "➕"
       ),
     ]),
-    ...model.cards.map((card, index) => div(
+    ...model.cards.map((card, index) => div( 
         { key: index,},[
           p({ },[
               button(
@@ -87,21 +87,21 @@ function view(dispatch, model) {
             button(
               {
                 onclick: () =>
-                  dispatch({ type: MSG.RATE_CARD, index, rating: 0 }),
+                  dispatch({ type: MSG.RATE_CARD, index }),
               },
               "👎"
             ),
             button(
               {
                 onclick: () =>
-                  dispatch({ type: MSG.RATE_CARD, index, rating: 1 }),
+                  dispatch({ type: MSG.RATE_CARD, index }),
               },
               "👍"
             ),
             button( 
               {
                 onclick: () =>
-                  dispatch({ type: MSG.RATE_CARD, index, rating: 2 }),
+                  dispatch({ type: MSG.RATE_CARD, index }),
               },
               "👌"
             ),
@@ -112,7 +112,7 @@ function view(dispatch, model) {
   ]);
 }
 
-// 'message' ist die Nachricht, die sagt, welche Aktion passiert ist.
+
 // 'model' enthält die aktuellen Daten der App.
 function update(message, model) {
   switch (message.type) {
